@@ -6,6 +6,9 @@
 require("twitteR")
 require("wordcloud")
 require("tm")
+require("dplyr")
+require("lubridate")
+require("ggplot2")
 
 rm(list = ls())
 
@@ -21,8 +24,17 @@ setup_twitter_oauth(consumer_key,
                     access_token,
                     access_secret)
 
-#the cainfo parameter is necessary only on Windows
-r_stats <- searchTwitter("#POL241", n = 5000)
+# get tweets from all three classes
+tweets <- searchTwitter("#POL241|#POL351|#POL353", n = 5000)
 
-# should get 1500
-length(r_stats)
+# convert to data frame
+df <- twListToDF(tweets) %>%
+  tbl_df
+
+
+
+
+
+
+
+
