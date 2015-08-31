@@ -26,11 +26,17 @@ setup_twitter_oauth(consumer_key,
                     access_secret)
 
 # get tweets from all three classes
-tweets <- searchTwitter("#POL241|#POL351|#POL353", n = 5000)
+tweets_raw <- searchTwitter("#POL241|#POL351|#POL353", n = 5000)
 
 # convert to data frame
-tweets <- twListToDF(tweets) %>%
-  tbl_df
+tweets <- twListToDF(tweets_raw) %>%
+  tbl_df %>%
+  # keep only relevant columns
+  select(text, created, screenName, retweetCount, isRetweet, longitude, latitude) %>%
+  # rename columns
+  rename(twitter_id = screenName) %>%
+  # convert time columns
+  mutate(created = ymd_hms(created))
 
 # link with student data
 students <- gs_title("Register Your Twitter Account (Responses)") %>%
@@ -47,7 +53,8 @@ students <- gs_title("Register Your Twitter Account (Responses)") %>%
   # convert class indicators to binary TRUE/FALSE
   mutate_each(funs(convert = ifelse(. == "Yes", TRUE, FALSE)), pol241:pol353)
 
-
+# combine tweets and students
+left_join(tweets, students)
 
 
 
