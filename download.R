@@ -9,6 +9,7 @@ require("tm")
 require("dplyr")
 require("lubridate")
 require("ggplot2")
+require("googlesheets")
 
 rm(list = ls())
 
@@ -28,10 +29,23 @@ setup_twitter_oauth(consumer_key,
 tweets <- searchTwitter("#POL241|#POL351|#POL353", n = 5000)
 
 # convert to data frame
-df <- twListToDF(tweets) %>%
+tweets <- twListToDF(tweets) %>%
   tbl_df
 
-
+# link with student data
+students <- gs_title("Register Your Twitter Account (Responses)") %>%
+  gs_read %>%
+  # rename columns
+  rename(timestamp = Timestamp,
+         first_name = First.Name,
+         last_name = Last.Name,
+         miami_id = Miami.UniqueID,
+         twitter_id = What.is.your.registered.Twitter.username.,
+         pol241 = Are.you.enrolled.in.POL.241..Section.G.with.Dr..Soltoff.only..,
+         pol351 = Are.you.enrolled.in.POL.351.,
+         pol353 = Are.you.enrolled.in.POL.353.) %>%
+  # convert class indicators to binary TRUE/FALSE
+  mutate_each(funs(convert = ifelse(. == "Yes", TRUE, FALSE)), pol241:pol353)
 
 
 
