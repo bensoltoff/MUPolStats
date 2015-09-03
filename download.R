@@ -36,7 +36,7 @@ tweets <- twListToDF(tweets_raw) %>%
   # rename columns
   rename(twitter_id = screenName) %>%
   # convert time columns
-  mutate(created = ymd_hms(created))
+  mutate(date = as.Date(created, format="%Y-%m-%d"))
 
 # link with student data
 students <- gs_title("Register Your Twitter Account (Responses)") %>%
