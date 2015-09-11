@@ -26,7 +26,7 @@ setup_twitter_oauth(consumer_key,
                     access_secret)
 
 # get tweets from all three classes
-tweets_raw <- searchTwitter("#POL241|#POL351|#POL353", n = 5000)
+tweets_raw <- searchTwitter("#POL241 OR #POL351 OR #POL353", n = 5000, since = "2015-08-01")
 
 # convert to data frame
 tweets <- twListToDF(tweets_raw) %>%
