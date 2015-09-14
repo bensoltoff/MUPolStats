@@ -6,6 +6,7 @@
 require("twitteR")
 require("wordcloud")
 require("tm")
+require("readr")
 require("dplyr")
 require("lubridate")
 require("ggplot2")
@@ -28,15 +29,26 @@ setup_twitter_oauth(consumer_key,
 # get tweets from all three classes
 tweets_raw <- searchTwitter("#POL241 OR #POL351 OR #POL353", n = 5000, since = "2015-08-01")
 
+# save locally
+write.csv(twListToDF(tweets_raw),
+          file = paste("output/tweets_", Sys.time(), ".csv", sep = ""), row.names = FALSE)
+
+# merge all tweets
+filenames <- list.files(path = "output/")
+tweets <- do.call("rbind", lapply(paste("output/", filenames, sep = ""), read.csv, header = TRUE))
+
 # convert to data frame
-tweets <- twListToDF(tweets_raw) %>%
+tweets %<>%
   tbl_df %>%
+  # keep only distinct rows
+  distinct %>%
   # keep only relevant columns
   select(text, created, screenName, retweetCount, isRetweet, longitude, latitude) %>%
   # rename columns
   rename(twitter_id = screenName) %>%
   # convert time columns
   mutate(date = as.Date(created, format="%Y-%m-%d"))
+
 
 # link with student data
 students <- gs_title("Register Your Twitter Account (Responses)") %>%
