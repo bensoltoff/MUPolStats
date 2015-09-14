@@ -30,12 +30,11 @@ setup_twitter_oauth(consumer_key,
 tweets_raw <- searchTwitter("#POL241 OR #POL351 OR #POL353", n = 5000, since = "2015-08-01")
 
 # save locally
-write.csv(twListToDF(tweets_raw),
-          file = paste("output/tweets_", Sys.time(), ".csv", sep = ""), row.names = FALSE)
+register_sqlite_backend("fall_2015.db")
+store_tweets_db(tweets_raw)
 
-# merge all tweets
-filenames <- list.files(path = "output/")
-tweets <- do.call("rbind", lapply(paste("output/", filenames, sep = ""), read.csv, header = TRUE))
+# load all tweets
+tweets <- load_tweets_db(as.data.frame = TRUE)
 
 # convert to data frame
 tweets %<>%
