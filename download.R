@@ -46,7 +46,9 @@ tweets %<>%
   # rename columns
   rename(twitter_id = screenName) %>%
   # convert time columns
-  mutate(date = as.Date(created, format="%Y-%m-%d"))
+  mutate(date = as.Date(created, format="%Y-%m-%d")) %>%
+  # fix tweets with non-ASCII characters
+  mutate(text = iconv(text, "latin1", "ASCII", sub = ""))
 
 
 # link with student data
