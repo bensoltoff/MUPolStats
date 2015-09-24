@@ -48,3 +48,25 @@ tweets %>%
   labs(x = "Hour of Day",
        y = "Number of Tweets")
 
+# frequency of tweets, by user
+tweets %>%
+  group_by(twitter_id) %>%
+  summarize(n = n()) %>%
+  left_join(students) %>%
+  distinct(twitter_id) %>%
+  arrange(-n) %>%
+  mutate(twitter_id = factor(twitter_id, levels = twitter_id)) %>%
+  ggplot(aes(x = twitter_id, y = n, fill = n)) +
+  geom_bar(stat = "identity") +
+  theme_bw() +
+  labs(x = "Twitter Handle",
+       y = "Number of Tweets")
+
+
+
+
+
+
+
+
+
