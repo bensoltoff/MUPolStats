@@ -5,6 +5,7 @@
 
 require("twitteR")
 require("wordcloud")
+require("RColorBrewer")
 require("tm")
 require("readr")
 require("dplyr")

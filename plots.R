@@ -62,9 +62,29 @@ tweets %>%
   labs(x = "Twitter Handle",
        y = "Number of Tweets")
 
+# word cloud
+## create a corpus
+tweet_corpus <- Corpus(VectorSource(tweets$text))
 
+# create document term matrix applying some transformations
+tdm <- TermDocumentMatrix(tweet_corpus,
+                          control = list(stopwords = c("#POL241", "#POL351", "#POL353", "pol",
+                                                       stopwords("english")),
+                                         removePunctuation = TRUE,
+                                         removeNumbers = TRUE, tolower = TRUE,
+                                         wordLengths = c(4, Inf)))
 
+## define tdm as matrix
+m <- as.matrix(tdm)
 
+## get word counts in decreasing order
+word_freqs <- sort(rowSums(m), decreasing = TRUE)
+
+## create a data frame with words and their frequencies
+dm <- data_frame(word = names(word_freqs), freq = word_freqs)
+
+## plot wordcloud
+wordcloud(dm$word, dm$freq, random.order = FALSE, colors = brewer.pal(8, "Dark2"))
 
 
 
