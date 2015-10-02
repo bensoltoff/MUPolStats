@@ -12,6 +12,7 @@ require("dplyr")
 require("lubridate")
 require("ggplot2")
 require("googlesheets")
+require("RWeka")
 
 rm(list = ls())
 
