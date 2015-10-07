@@ -13,6 +13,7 @@ require("lubridate")
 require("ggplot2")
 require("googlesheets")
 require("RWeka")
+require("magrittr")
 
 rm(list = ls())
 
@@ -69,7 +70,8 @@ students <- gs_title("Register Your Twitter Account (Responses)") %>%
   mutate_each(funs(convert = ifelse(. == "Yes", TRUE, FALSE)), pol241:pol353)
 
 # combine tweets and students
-left_join(tweets, students)
+tweets %<>%
+  left_join(students)
 
 
 

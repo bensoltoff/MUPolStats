@@ -64,40 +64,34 @@ tweets %>%
 
 # word cloud
 ## extract text
-tweets.text <- tweets$text
-
-## convert all text to lower case
-tweets.text <- tolower(tweets.text)
-
-## Replace blank space (“rt”)
-tweets.text <- gsub("rt", "", tweets.text)
-
-## Replace @UserName
-# tweets.text <- gsub("@\\w+", "", tweets.text)
-
-## Remove punctuation
-tweets.text <- gsub("[^[:alnum:][:space:]'@#]", "", tweets.text)
-
-## Remove links
-tweets.text <- gsub("http\\w+", "", tweets.text)
-
-## Remove tabs
-tweets.text <- gsub("[ |\t]{2,}", "", tweets.text)
-
-## Remove linebreaks
-tweets.text <- gsub("\n", " ", tweets.text)
-
-## Remove blank spaces at the beginning
-tweets.text <- gsub("^ ", "", tweets.text)
-
-## Remove blank spaces at the end
-tweets.text <- gsub(" $", "", tweets.text)
-
-## Remove class hashtags
-tweets.text <- gsub("#pol241|#pol351|#pol353", "", tweets.text)
+tweets.text <- tweets %>%
+  # clean up text
+  mutate(
+    # convert all text to lower case
+    text = tolower(text),
+    # Replace blank space (“rt”)
+    text = gsub("rt", "", text),
+    # Replace @UserName
+    # text = gsub("@\\w+", "", text),
+    # Remove punctuation
+    text = gsub("[^[:alnum:][:space:]'@#]", "", text),
+    # Remove links
+    text = gsub("http\\w+", "", text),
+    # Remove tabs
+    text = gsub("[ |\t]{2,}", "", text),
+    # Remove linebreaks
+    text = gsub("\n", " ", text),
+    # Remove blank spaces at the beginning
+    text = gsub("^ ", "", text),
+    # Remove blank spaces at the end
+    text = gsub(" $", "", text),
+    # Remove class hashtags
+    text = gsub("#pol241|#pol351|#pol353", "", text))
 
 ## create corpus
-tweets.text.corpus <- Corpus(VectorSource(tweets.text))
+tweets.text.corpus <- Corpus(VectorSource(tweets.text %>%
+                                            filter(pol353 == TRUE) %>%
+                                            .$text))
 
 ## clean up by removing stop words
 tweets.text.corpus <- tm_map(tweets.text.corpus, function(x) removeWords(x, stopwords()))
@@ -116,11 +110,11 @@ m <- as.matrix(tdm)
 word_freqs <- sort(rowSums(m), decreasing = TRUE) 
 
 # create a data frame with words and their frequencies
-dm <- data.frame(word = names(word_freqs), freq = word_freqs)
+dm <- data_frame(word = names(word_freqs), freq = word_freqs)
 
 ## plot wordcloud
 wordcloud(dm$word, dm$freq, random.order = FALSE, colors = brewer.pal(8, "Dark2"),
-          rot.per = 0, fixed.asp = FALSE, max.words = 150)
+          rot.per = 0, fixed.asp = FALSE, max.words = 150, min.freq = 5)
 
 
 
