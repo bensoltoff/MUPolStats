@@ -90,7 +90,7 @@ tweets.text <- tweets %>%
 
 ## create corpus
 tweets.text.corpus <- Corpus(VectorSource(tweets.text %>%
-                                            filter(pol353 == TRUE) %>%
+                                            # filter(pol351 == TRUE) %>%
                                             .$text))
 
 ## clean up by removing stop words
@@ -114,7 +114,7 @@ dm <- data_frame(word = names(word_freqs), freq = word_freqs)
 
 ## plot wordcloud
 wordcloud(dm$word, dm$freq, random.order = FALSE, colors = brewer.pal(8, "Dark2"),
-          rot.per = 0, fixed.asp = FALSE, max.words = 150, min.freq = 5)
+          rot.per = 0, fixed.asp = FALSE, max.words = 100, min.freq = 5)
 
 
 
