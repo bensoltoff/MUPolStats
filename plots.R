@@ -65,12 +65,19 @@ tweets %>%
 # frequency of tweets, by user, in table form
 tweets %>%
   group_by(first_name, last_name, miami_id) %>%
+  # count number of relevant tweets for each student
   summarize(n = n(),
             n_per_week = n() / 6) %>%
+  # calculate points to be awarded based on per_week tweet frequency
+  mutate(grade = ifelse(n_per_week > 3, 50,
+                        ifelse(n_per_week > 2, 40,
+                               ifelse(n_per_week > 1, 35,
+                                      ifelse(n_per_week > 0, 30, 20))))) %>%
   left_join(students) %>%
   distinct(miami_id) %>%
   group_by %>%
   arrange(last_name, first_name) %>%
+  select(-timestamp) %>%
   write_csv("tweet_summary_FA15.csv")
   
 
