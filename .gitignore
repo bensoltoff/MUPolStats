@@ -3,3 +3,4 @@
 .RData
 keys.R
 .httr-oauth
+tweet_summary*
