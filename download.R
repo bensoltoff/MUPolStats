@@ -51,7 +51,9 @@ tweets %<>%
   # convert time columns
   mutate(date = as.Date(created, format="%Y-%m-%d")) %>%
   # fix tweets with non-ASCII characters
-  mutate(text = iconv(text, "latin1", "ASCII", sub = ""))
+  mutate(text = iconv(text, "latin1", "ASCII", sub = "")) %>%
+  # convert twitter_id to lowercase
+  mutate(twitter_id = tolower(twitter_id))
 
 
 # link with student data
@@ -67,7 +69,9 @@ students <- gs_title("Register Your Twitter Account (Responses)") %>%
          pol351 = Are.you.enrolled.in.POL.351.,
          pol353 = Are.you.enrolled.in.POL.353.) %>%
   # convert class indicators to binary TRUE/FALSE
-  mutate_each(funs(convert = ifelse(. == "Yes", TRUE, FALSE)), pol241:pol353)
+  mutate_each(funs(convert = ifelse(. == "Yes", TRUE, FALSE)), pol241:pol353) %>%
+  # convert twitter_id to lowercase
+  mutate(twitter_id = tolower(twitter_id))
 
 # combine tweets and students
 tweets %<>%

@@ -62,6 +62,18 @@ tweets %>%
   labs(x = "Twitter Handle",
        y = "Number of Tweets")
 
+# frequency of tweets, by user, in table form
+tweets %>%
+  group_by(first_name, last_name, miami_id) %>%
+  summarize(n = n(),
+            n_per_week = n() / 6) %>%
+  left_join(students) %>%
+  distinct(miami_id) %>%
+  group_by %>%
+  arrange(last_name, first_name) %>%
+  write_csv("tweet_summary_FA15.csv")
+  
+
 # word cloud
 ## extract text
 tweets.text <- tweets %>%
