@@ -67,7 +67,7 @@ tweets %>%
   group_by(first_name, last_name, miami_id) %>%
   # count number of relevant tweets for each student
   summarize(n = n(),
-            n_per_week = n() / 6) %>%
+            n_per_week = n() / 13) %>%
   # calculate points to be awarded based on per_week tweet frequency
   mutate(grade = ifelse(n_per_week > 3, 50,
                         ifelse(n_per_week > 2, 40,

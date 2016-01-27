@@ -30,10 +30,10 @@ setup_twitter_oauth(consumer_key,
                     access_secret)
 
 # get tweets from all three classes
-tweets_raw <- searchTwitter("#POL241 OR #POL351 OR #POL353", n = 5000, since = "2015-08-01")
+tweets_raw <- searchTwitter("#POL241 OR #POL352 OR #POL353", n = 5000, since = "2016-01-24")
 
 # save locally
-register_sqlite_backend("fall_2015.db")
+register_sqlite_backend("spring_2016.db")
 store_tweets_db(tweets_raw)
 
 # load all tweets
@@ -57,7 +57,7 @@ tweets %<>%
 
 
 # link with student data
-students <- gs_title("Register Your Twitter Account (Responses)") %>%
+students <- gs_title("Register Your Twitter Account (Responses - Spring 2016)") %>%
   gs_read %>%
   # rename columns
   rename(timestamp = Timestamp,
@@ -65,8 +65,8 @@ students <- gs_title("Register Your Twitter Account (Responses)") %>%
          last_name = Last.Name,
          miami_id = Miami.UniqueID,
          twitter_id = What.is.your.registered.Twitter.username.,
-         pol241 = Are.you.enrolled.in.POL.241..Section.G.with.Dr..Soltoff.only..,
-         pol351 = Are.you.enrolled.in.POL.351.,
+         pol241 = Are.you.enrolled.in.POL.241..Section.E.with.Dr..Soltoff.only..,
+         pol352 = Are.you.enrolled.in.POL.352.,
          pol353 = Are.you.enrolled.in.POL.353.) %>%
   # convert class indicators to binary TRUE/FALSE
   mutate_each(funs(convert = ifelse(. == "Yes", TRUE, FALSE)), pol241:pol353) %>%
