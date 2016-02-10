@@ -78,7 +78,7 @@ tweets %>%
   group_by %>%
   arrange(last_name, first_name) %>%
   select(-timestamp) %>%
-  write_csv("tweet_summary_FA15.csv")
+  write_csv("tweet_summary_SP16.csv")
   
 
 # word cloud
@@ -105,7 +105,7 @@ tweets.text <- tweets %>%
     # Remove blank spaces at the end
     text = gsub(" $", "", text),
     # Remove class hashtags
-    text = gsub("#pol241|#pol351|#pol353", "", text))
+    text = gsub("#pol241|#pol352|#pol353", "", text))
 
 ## create corpus
 tweets.text.corpus <- Corpus(VectorSource(tweets.text %>%
