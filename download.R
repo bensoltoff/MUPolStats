@@ -61,13 +61,13 @@ students <- gs_title("Register Your Twitter Account (Responses - Spring 2016)") 
   gs_read %>%
   # rename columns
   rename(timestamp = Timestamp,
-         first_name = First.Name,
-         last_name = Last.Name,
-         miami_id = Miami.UniqueID,
-         twitter_id = What.is.your.registered.Twitter.username.,
-         pol241 = Are.you.enrolled.in.POL.241..Section.E.with.Dr..Soltoff.only..,
-         pol352 = Are.you.enrolled.in.POL.352.,
-         pol353 = Are.you.enrolled.in.POL.353.) %>%
+         first_name = `First Name`,
+         last_name = `Last Name`,
+         miami_id = `Miami UniqueID`,
+         twitter_id = `What is your registered Twitter username?`,
+         pol241 = `Are you enrolled in POL 241 (Section E with Dr. Soltoff only)?`,
+         pol352 = `Are you enrolled in POL 352?`,
+         pol353 = `Are you enrolled in POL 353?`) %>%
   # convert class indicators to binary TRUE/FALSE
   mutate_each(funs(convert = ifelse(. == "Yes", TRUE, FALSE)), pol241:pol353) %>%
   # convert twitter_id to lowercase
